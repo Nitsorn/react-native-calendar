@@ -6,12 +6,18 @@ const {
 	View,
 	Dimensions,
 	StyleSheet,
+	TouchableOpacity,
 	Text,
 } = React;
 
 var {width, height} = Dimensions.get('window');
 
+
 const DayView = require('./DayView.js');
+
+const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const customMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
+'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function defaultStyle(date,prev,future) {
 	var style = [styles.container]
@@ -59,9 +65,9 @@ module.exports = React.createClass({
 		this.rerender();
 	},
 	componentWillReceiveProps : function(nextProps) {
+		// no longer receiving props but changing state from within
 		if (nextProps.month != undefined) {
 			this.setState({month : nextProps.month});
-			this.rerender();
 		}
 	},
 	rerender : function() {
@@ -93,9 +99,34 @@ module.exports = React.createClass({
 	addCallback : function(callback){
 		this.state.callbacks.push(callback);
 	},
+	lastMonth() {
+    let month = new Date(this.state.month);
+    month.setMonth(month.getMonth() - 1);
+    this.setState({month : month}, this.rerender);
+  },
+  nextMonth() {
+    let month = new Date(this.state.month);
+    month.setMonth(month.getMonth() + 1);
+    this.setState({month : month}, this.rerender);
+  },
 	render : function(){
 		return (
-			<View>
+			<View style={styles.componentContainer}>
+				<View style={styles.buttonsContainer}>
+          <TouchableOpacity onPress={this.lastMonth.bind(this)}>
+            <View style={styles.buttonWrapper}>
+              <Text style={styles.button}>Prev</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.thisMonth}>
+            <Text>{customMonthNames[this.state.month.getMonth()]}</Text>
+          </View>
+          <TouchableOpacity onPress={this.nextMonth.bind(this)}>
+            <View style={[styles.buttonWrapper,styles.next]}>
+              <Text style={styles.button}>Next</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
 				<View style={styles.calendar}>
 					{this.state.rows}
 				</View>
@@ -105,6 +136,39 @@ module.exports = React.createClass({
 });
 
 const styles = StyleSheet.create({
+	componentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+	buttonsContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttonWrapper: {
+    width: 0.3*width,
+    alignSelf:'center',
+    height: 30,
+    borderRadius: 20,
+    margin: 2,
+    backgroundColor: '#B0B0B0',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  thisMonth: {
+    width: 0.3*width,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  next: {
+    backgroundColor: '#A3A3A3',
+  },
+  button: {
+    color: 'white',
+    fontSize: 15,
+  },
 	calendar: {
 		flex: 1,
 		justifyContent: 'center',

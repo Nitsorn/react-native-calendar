@@ -27,6 +27,8 @@ var {width, height} = Dimensions.get('window');
 // } = React;
 // const Calendar = require('./calendar.js');
 
+
+
 class test extends Component {
   constructor(props){
     super(props);
@@ -37,32 +39,11 @@ class test extends Component {
   onDateChanged(date){
 
   }
-  lastMonth() {
-    let month = new Date(this.state.month);
-    month.setMonth(month.getMonth() - 1);
-    this.setState({month : month});
-  }
-  nextMonth() {
-    let month = new Date(this.state.month);
-    month.setMonth(month.getMonth() + 1);
-    this.setState({month : month});
-  }
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.state.month.getMonth() + 1}</Text>
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity onPress={this.lastMonth.bind(this)}>
-            <View style={styles.buttonWrapper}>
-              <Text style={styles.button}>Prev</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.nextMonth.bind(this)}>
-            <View style={[styles.buttonWrapper,styles.next]}>
-              <Text style={styles.button}>Next</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+
+
         <Calendar month={this.state.month} getDayStyle={this.getDayStyle}/>
       </View>
     );
@@ -86,27 +67,7 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
-  buttonsContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
 
-  },
-  buttonWrapper: {
-    width: 0.5*width,
-    alignSelf:'center',
-    height: 50,
-    backgroundColor: '#B0B0B0',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  next: {
-    backgroundColor: '#A3A3A3',
-  },
-  button: {
-    color: 'white',
-    fontSize: 15,
-  }
 });
 
 AppRegistry.registerComponent('test', () => test);
