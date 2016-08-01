@@ -39,12 +39,19 @@ class test extends Component {
   onDateChanged(date){
 
   }
+  showSelectedDay(day) {
+    console.log(day)
+  }
   render() {
     return (
       <View style={styles.container}>
 
 
-        <Calendar month={this.state.month} getDayStyle={this.getDayStyle}/>
+        <Calendar
+          month={this.state.month}
+          getDayStyle={this.getDayStyle}
+          onSelectDay={this.showSelectedDay}
+          />
       </View>
     );
   }

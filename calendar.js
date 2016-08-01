@@ -18,6 +18,7 @@ const DayView = require('./DayView.js');
 const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const customMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const selectedDay = null;
 
 function defaultStyle(date,prev,future) {
 	var style = [styles.container]
@@ -27,6 +28,9 @@ function defaultStyle(date,prev,future) {
 		style.push(styles.future)
 	if (date.toDateString() === (new Date()).toDateString()) {
 		style.push(styles.today)
+	}
+	if (selectedDay && date.toDateString() === selectedDay.toDateString()) {
+		style.push(styles.selectedDay)
 	}
 	return style
 }
@@ -45,7 +49,7 @@ module.exports = React.createClass({
 	getInitialState : function(){
 		return {
 			month : new Date(),
-			callbacks : []
+			callbacks : [],
 		};
 	},
 	componentWillMount : function(){
@@ -55,7 +59,7 @@ module.exports = React.createClass({
 		for (var i = 0; i < 6; i++){
 			var columns = [];
 			for (var j = 0; j < 7; j++){
-				columns.push(<CustomDayView key={i+','+j} day={'1'} addCallback={this.addCallback}/>);
+				columns.push(<CustomDayView key={i+','+j} day={'1'} addCallback={this.addCallback} selectDay={this.selectDay}/>);
 			}
 			rows.push(<View key={i} style={styles.weekRow}>{columns}</View>);
 		}
@@ -99,6 +103,11 @@ module.exports = React.createClass({
 	addCallback : function(callback){
 		this.state.callbacks.push(callback);
 	},
+	selectDay(day) {
+		selectedDay = day;
+		this.rerender();
+		this.props.onSelectDay(day);
+	},
 	lastMonth() {
     let month = new Date(this.state.month);
     month.setMonth(month.getMonth() - 1);
@@ -113,7 +122,7 @@ module.exports = React.createClass({
 		return (
 			<View style={styles.componentContainer}>
 				<View style={styles.buttonsContainer}>
-          <TouchableOpacity onPress={this.lastMonth.bind(this)}>
+          <TouchableOpacity onPress={this.lastMonth}>
             <View style={styles.buttonWrapper}>
               <Text style={styles.button}>Prev</Text>
             </View>
@@ -121,8 +130,8 @@ module.exports = React.createClass({
           <View style={styles.thisMonth}>
             <Text>{customMonthNames[this.state.month.getMonth()]}</Text>
           </View>
-          <TouchableOpacity onPress={this.nextMonth.bind(this)}>
-            <View style={[styles.buttonWrapper,styles.next]}>
+          <TouchableOpacity onPress={this.nextMonth}>
+            <View style={styles.buttonWrapper}>
               <Text style={styles.button}>Next</Text>
             </View>
           </TouchableOpacity>
@@ -162,9 +171,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  next: {
-    backgroundColor: '#A3A3A3',
-  },
   button: {
     color: 'white',
     fontSize: 15,
@@ -197,6 +203,9 @@ const styles = StyleSheet.create({
 	},
 	today: {
 		borderWidth: 2
+	},
+	selectedDay: {
+		backgroundColor: '#e2e2e2'
 	}
 
 });

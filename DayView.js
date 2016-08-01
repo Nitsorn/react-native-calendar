@@ -5,6 +5,7 @@ var React = require('react-native');
 var {
 	View,
 	Text,
+	TouchableOpacity
 } = React;
 
 module.exports = React.createClass({
@@ -25,9 +26,11 @@ module.exports = React.createClass({
 	},
 	render : function(){
 		return (
-			<View style={this.state.style}>
-				<Text>{this.state.day.getDate()}</Text>
-			</View>
+			<TouchableOpacity onPress={this.props.selectDay.bind(null, this.state.day)}>
+				<View style={this.state.style}>
+					<Text>{this.state.day.getDate()}</Text>
+				</View>
+			</TouchableOpacity>
 		);
 	}
 });
