@@ -18,7 +18,7 @@ const DayView = require('./DayView.js');
 const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const customMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const selectedDay = null;
+const selectedDay = new Date();
 
 function defaultStyle(date,prev,future) {
 	var style = [styles.container]
@@ -202,10 +202,12 @@ const styles = StyleSheet.create({
 		backgroundColor: 'whitesmoke'
 	},
 	today: {
-		borderWidth: 2
+		borderWidth: 2,
+		borderRadius: 4,
 	},
 	selectedDay: {
-		backgroundColor: '#e2e2e2'
+		backgroundColor: '#e2e2e2',
+		borderRadius: 4,
 	}
 
 });

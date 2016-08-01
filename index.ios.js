@@ -28,12 +28,13 @@ var {width, height} = Dimensions.get('window');
 // const Calendar = require('./calendar.js');
 
 
-
 class test extends Component {
+
   constructor(props){
     super(props);
     this.state = {
-      month : new Date()
+      month : new Date(),
+      selectedDay: new Date(),
     }
   }
   onDateChanged(date){
@@ -45,8 +46,6 @@ class test extends Component {
   render() {
     return (
       <View style={styles.container}>
-
-
         <Calendar
           month={this.state.month}
           getDayStyle={this.getDayStyle}
