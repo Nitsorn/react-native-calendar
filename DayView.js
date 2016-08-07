@@ -11,9 +11,9 @@ var {
 module.exports = React.createClass({
 	getInitialState : function(){
 		return {
-      day : new Date(),
-      style : {}
-    };
+		      day : new Date(),
+		      style : {}
+		};
 	},
 	componentDidMount : function(){
 		this.props.addCallback(this.changeStyle);
